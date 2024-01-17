@@ -24,6 +24,9 @@ class Expenses {
 struct ContentView: View {
     @State private var expenses = Expenses()
     
+    // 1. Keep track if second view have to be shown
+    @State private var showAddExpense = false
+    
     var body: some View {
         NavigationStack {
             List {
@@ -35,9 +38,13 @@ struct ContentView: View {
             .navigationTitle("iExpense")
             .toolbar {
                 Button("Add expense", systemImage: "plus") {
-                    let expense = ExpenseItem(name: "Test", type: "Personal", amount: 5)
-                    expenses.items.append(expense)
+                    // 5. Changing the showAddExpense to true and trigger the second screen when + is tapped
+                    showAddExpense = true
                 }
+            }
+            .sheet(isPresented: $showAddExpense) {
+                // 2. Show second view
+                AddView(expenses: expenses)
             }
         }
     }
